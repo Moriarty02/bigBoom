@@ -81,6 +81,16 @@ const frameIn = [
         name: 'redirect',
         hidden: true,
         component: _import('system/function/redirect')
+      },
+
+      {
+        path: '/userCenter',
+        name: 'userCenter',
+        meta: {
+          title: '个人中心',
+          auth: true
+        },
+        component: _import('userCenter/personalCenter')
       }
     ]
   }

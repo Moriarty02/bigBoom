@@ -50,6 +50,22 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'put',
       data
     })
+  },
+  SYS_USER_OWN (data = {}) {
+    // 接口请求
+    return service({
+      url: '/api/own',
+      method: 'get',
+      data
+    })
+  },
+  SYS_USER_UPDATE_PWD (data = {}) {
+    // 接口请求
+    return service({
+      url: '/api/modifyPassword',
+      method: 'post',
+      data
+    })
   }
 
 })
