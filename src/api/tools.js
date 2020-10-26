@@ -84,3 +84,12 @@ export function errorCreate (msg) {
   errorLog(error)
   throw error
 }
+export function getQueryString (data) {
+  if (!data) return ''
+  return Object
+    .entries(data)
+    .reduce((prev, next, currentIndex) => {
+      return prev + `${currentIndex === 0 ? '?' : '&'}${next[0]}=${next[1]}`
+    },
+    '')
+}

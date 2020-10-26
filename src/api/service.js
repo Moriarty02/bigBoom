@@ -51,7 +51,10 @@ function createService () {
       const status = get(error, 'response.status')
       switch (status) {
         case 400: error.message = '请求错误'; break
-        case 401: error.message = '未授权，请登录'; break
+        case 401:
+          error.message = '未授权，请登录'
+          window.location.replace(window.location.origin + '/#/login')
+          break
         case 403: error.message = '拒绝访问'; break
         case 404: error.message = `请求地址出错: ${error.response.config.url}`; break
         case 408: error.message = '请求超时'; break

@@ -1,8 +1,8 @@
 <template>
   <d2-container class="page">
     <d2-page-cover>
-      <d2-icon-svg class="logo" name="d2-admin"/>
-      <template slot="footer">
+      <!-- <d2-icon-svg class="logo" name="d2-admin"/> -->
+      <!-- <template slot="footer">
         <div class="btn-group">
           <span class="btn-group__btn" @click="$open('https://github.com/d2-projects')">开源组织</span> |
           <span class="btn-group__btn" @click="$open('https://d2.pub/zh/doc/d2-admin')">文档</span> |
@@ -22,25 +22,30 @@
         </div>
         <d2-badge/>
         <d2-help/>
-      </template>
+      </template> -->
     </d2-page-cover>
   </d2-container>
 </template>
 
 <script>
-import D2Badge from './components/d2-badge'
-import D2Help from './components/d2-help'
+// import D2Badge from './components/d2-badge'
+// import D2Help from './components/d2-help'
 import D2PageCover from './components/d2-page-cover'
 export default {
   components: {
-    D2Badge,
-    D2Help,
+    // D2Badge,
+    // D2Help,
     D2PageCover
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.text-center{
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
 .page {
   .logo {
     width: 120px;

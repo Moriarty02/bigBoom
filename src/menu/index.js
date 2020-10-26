@@ -47,6 +47,6 @@ export const menuAside = supplementPath([
     ]
   },
   { path: '/index', title: '耗材信息', icon: 'folder-o' },
-  { path: '/index2', title: '人员管理', icon: 'folder-o' }
+  { path: '/user', title: '人员管理', icon: 'folder-o' }
 
 ])
