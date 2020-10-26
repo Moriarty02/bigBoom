@@ -30,5 +30,52 @@ util.open = function (url) {
   a.click()
   document.body.removeChild(document.getElementById('d2admin-link-temp'))
 }
+util.timeFormat = (val) => {
+  if (val <= 0) return val
+  let ret = ''
+  const date = new Date(val)
+  const Y = date.getFullYear()
+  let M = date.getMonth() + 1
+  let D = date.getDate()
+  let H = date.getHours()
+  let m = date.getMinutes()
+  let s = date.getSeconds()
+  // 月/天/时/分/秒小于10前面补0
+  if (M < 10) {
+    M = '0' + M
+  }
+  if (D < 10) {
+    D = '0' + D
+  }
+  if (H < 10) {
+    H = '0' + H
+  }
+  if (m < 10) {
+    m = '0' + m
+  }
+  if (s < 10) {
+    s = '0' + s
+  }
+  ret = Y + '-' + M + '-' + D + ' ' + H + ':' + m + ':' + s
+  return ret
+}
+util.dateFormat = (val) => {
+  if (val <= 0) return val
+  let ret = ''
+  const date = new Date(val)
+  const Y = date.getFullYear()
+  let M = date.getMonth() + 1
+  let D = date.getDate()
 
+  // 月/天/时/分/秒小于10前面补0
+  if (M < 10) {
+    M = '0' + M
+  }
+  if (D < 10) {
+    D = '0' + D
+  }
+
+  ret = Y + '-' + M + '-' + D
+  return ret
+}
 export default util

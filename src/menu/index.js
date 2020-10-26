@@ -34,8 +34,8 @@ export const menuAside = supplementPath([
     title: '雷管管理',
     icon: 'folder-o',
     children: [
-      { path: '/page1', title: '雷管信息' },
-      { path: '/page2', title: '雷管出入帐' }
+      { path: '/detonator', title: '雷管信息' },
+      { path: '/detonatorLog', title: '雷管出入帐' }
     ]
   },
   {

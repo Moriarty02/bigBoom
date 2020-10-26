@@ -30,6 +30,24 @@ const frameIn = [
         },
         component: _import('demo/user/index')
       },
+      {
+        path: 'detonator',
+        name: 'detonator',
+        meta: {
+          title: '雷管管理',
+          auth: true
+        },
+        component: _import('detonator/info/index')
+      },
+      {
+        path: 'detonatorLog',
+        name: 'detonatorLog',
+        meta: {
+          title: '雷管操作',
+          auth: true
+        },
+        component: _import('detonator/operationLog/index')
+      },
       // 演示页面
       {
         path: 'page1',
