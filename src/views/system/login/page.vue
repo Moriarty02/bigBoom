@@ -125,8 +125,8 @@ export default {
       dialogVisible: false,
       // 表单
       formLogin: {
-        username: 'zhangjunyi',
-        password: 'Zhangjunyi666'
+        username: '',
+        password: ''
       },
       // 表单校验
       rules: {
