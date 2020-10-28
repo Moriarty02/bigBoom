@@ -219,13 +219,9 @@ export default {
       const params = {}
       if (this.query.queryValue) {
         params.date = this.query.queryValue
-      } else {
-        params.date = ''
       }
-      params.pageNo = this.pager.pageNo
-      params.pageSize = this.pager.pageSize
-
-      const res = await api.DETONATOR_LOG(params)
+      params.date = ''
+      const res = await api.EXPLOSIVE_LOG(params)
       if (res) {
         this.tableData = this.fixData(res.records)
         this.pager.total = res.total

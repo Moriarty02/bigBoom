@@ -42,10 +42,11 @@ export const menuAside = supplementPath([
     title: '炸药管理',
     icon: 'folder-o',
     children: [
-      { path: '/page1', title: '炸药信息' },
-      { path: '/page2', title: '炸药出入帐' }
+      { path: '/explosive', title: '炸药信息' },
+      { path: '/explosiveLog', title: '炸药出入帐' }
     ]
   },
+
   { path: '/index', title: '耗材信息', icon: 'folder-o' },
   { path: '/user', title: '人员管理', icon: 'folder-o' }
 

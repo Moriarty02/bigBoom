@@ -48,6 +48,24 @@ const frameIn = [
         },
         component: _import('detonator/operationLog/index')
       },
+      {
+        path: 'explosive',
+        name: 'explosive',
+        meta: {
+          title: '炸药管理',
+          auth: true
+        },
+        component: _import('explosive/info/index')
+      },
+      {
+        path: 'explosiveLog',
+        name: 'explosiveLog',
+        meta: {
+          title: '炸药操作',
+          auth: true
+        },
+        component: _import('explosive/operationLog/index')
+      },
       // 演示页面
       {
         path: 'page1',

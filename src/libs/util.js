@@ -78,4 +78,5 @@ util.dateFormat = (val) => {
   ret = Y + '-' + M + '-' + D
   return ret
 }
+
 export default util
