@@ -66,6 +66,15 @@ const frameIn = [
         },
         component: _import('explosive/operationLog/index')
       },
+      {
+        path: 'detail',
+        name: 'detail',
+        meta: {
+          title: '耗材明细',
+          auth: true
+        },
+        component: _import('detail/boomDetail/index')
+      },
       // 演示页面
       {
         path: 'page1',

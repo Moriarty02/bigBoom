@@ -138,7 +138,7 @@
         </el-table>
          <el-pagination
           :current-page.sync="pager.pageNo"
-          :page-size="100"
+          :page-size="10"
            @current-change="handleCurrentChange"
           layout="total, prev, pager, next"
           :total="pager.total">
