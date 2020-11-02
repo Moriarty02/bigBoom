@@ -3,38 +3,34 @@
     <template slot="header">
       <div class="module-header">
        <div class="left-box">
-         <el-form size="mini" inline>
-            <el-form-item>
-          <el-select v-model="query.queryKey" placeholder="检索字段" @change="handleSearchSelect($event)">
-            <el-option v-for="(options,index) in searchOptions"
-            :key="index"
-            :label='options.label'
-            :value='options.value'></el-option>
+        <el-form :inline="true" size="mini" :model="formInline" class="demo-form-inline">
+          <el-form-item label="固定码">
+            <el-input v-model="formInline.fixCode" placeholder=""></el-input>
+          </el-form-item>
 
-          </el-select>
-        </el-form-item>
-        <el-form-item>
+          <el-form-item label="子码">
+            <el-input v-model="formInline.childCode" placeholder=""></el-input>
+          </el-form-item>
 
-          <el-input v-if="this.query.queryKey==='fixCode'||this.query.queryKey==='childCode'" v-model='query.queryValue' placeholder="检索码" />
-          <el-select
-           v-else-if="this.query.queryKey==='status'"
- v-model="query.queryValue" placeholder="请选择状态">
-          <el-option
-            v-for="item in statusOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-         <div class="during-box" v-else-if="this.query.queryKey==='fromTo'">
-           <el-input width="50" v-model='query.queryValue' placeholder="起始子码" />
-           <el-input v-model='query.queryValue2' placeholder="结束子码" />
-          </div>
-        </el-form-item>
+          <el-form-item label="子码范围搜索起始值">
+            <el-input v-model="formInline.from" placeholder=""></el-input>
+          </el-form-item>
+
+          <el-form-item label="子码范围搜索终止值">
+            <el-input v-model="formInline.to" placeholder=""></el-input>
+          </el-form-item>
+          <el-form-item label="status">
+            <el-select v-model="formInline.status" placeholder="状态">
+              <el-option
+              v-for="(item,key) in statusOptions"
+              :key="key"
+              :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
-          <el-button  @click="getList" type="primary" >查询</el-button>
-        </el-form-item>
-         </el-form>
+            <el-button type="primary" @click="hadndleSearch">查询</el-button>
+          </el-form-item>
+        </el-form>
        </div>
        <div class="right-box">
           <el-button  @click="handleAdd" type="primary" size="mini">批量操作</el-button>
@@ -57,51 +53,64 @@
           </el-table-column>
             <el-table-column
 
+            label="固定码"
             prop="fixCode"
-            label="fixCode"
             width="100">
           </el-table-column>
             <el-table-column
 
             prop="childCode"
-            label="childCode"
+            label="子码"
             width="100">
           </el-table-column>
-            <el-table-column
 
+            <el-table-column
             prop="displayStoreTime"
-            label="storeTime"
+            label="入库时间"
             width="160">
           </el-table-column>
             <el-table-column
 
             prop="displaySendTime"
-            label="sendTime"
+            label="发出时间"
             width="160">
           </el-table-column>
             <el-table-column
 
             prop="displayBackTime"
-            label="backTime"
+            label="归还时间"
             width="160">
           </el-table-column>
              <el-table-column
-
             prop="keeper"
-            label="keeper"
+            label="保管人"
             width="100">
           </el-table-column>
            <el-table-column
 
             prop="consumer"
-            label="consumer"
+            label="领退人"
             width="100">
           </el-table-column>
            <el-table-column
-
             prop="status"
-            label="status"
+            label="状态"
             width="100">
+             <template slot-scope="scope">
+
+          <el-tag type="success" v-if="scope.row.status === 1">
+            入库
+          </el-tag>
+          <el-tag type="success" v-if="scope.row.status === 2">
+            发出
+          </el-tag>
+          <el-tag type="success" v-if="scope.row.status === 3">
+            退还
+          </el-tag>
+           <el-tag type="success" v-if="scope.row.status === 4">
+            已使用
+          </el-tag>
+             </template>
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -109,50 +118,138 @@
             width="200">
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-              <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button>
+              <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
-        <d2-pagination
-                marginTop
-                :currentPage='pager.pageNo'
-                :pageSize='pager.pageSize'
-                :total='pager.total'
-                @doCurrentChange='handleCurrentChange'>
-            </d2-pagination>
+         <el-pagination
+          :current-page.sync="pager.pageNo"
+          :page-size="10"
+           @current-change="handleCurrentChange"
+          layout="total, prev, pager, next"
+          :total="pager.total">
+        </el-pagination>
       </div>
     </d2-module>
-      <el-dialog :title="editTitle" :visible.sync="dialogFormVisible" width="700px">
-     <el-form :model="form" label-position="right" >
-        <el-form-item label="optType" :label-width="formLabelWidth">
-           <el-select v-model="form.optType" placeholder="请选择">
+    <el-dialog title="批量操作" :visible.sync="dialogBatchFormVisible" width="700px">
+     <el-form :model="batchForm" size="mini" label-position="right">
+       <!-- <el-form-item label="日期" >
+           <el-date-picker
+                v-model="batchForm.date"
+                type="date"
+                value-format="timestamp"
+                :picker-options="pickerOptions"
+                placeholder="选择日期时间">
+              </el-date-picker>
+       </el-form-item> -->
+       <el-form-item label="日期" :label-width="formLabelWidth">
+          <el-date-picker
+                v-model="batchForm.date"
+                type="date"
+                value-format="timestamp"
+                :picker-options="pickerOptions"
+                placeholder="选择日期时间">
+              </el-date-picker>
+        </el-form-item>
+        <el-form-item label="操作类型" :label-width="formLabelWidth">
+           <el-select v-model="batchForm.optType" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
             :label="option.label"
             :value="option.value"></el-option>
-
           </el-select>
         </el-form-item>
-          <el-form-item label="固定码" :label-width="formLabelWidth">
-          <el-input v-model="form.fixCode" autocomplete="off"></el-input>
-        </el-form-item>
           <el-form-item
-           label="发码起始值" :label-width="formLabelWidth">
+           label="固定码" :label-width="formLabelWidth">
           <el-input
-           :disabled="fromToDisable"
-          v-model="form.from" autocomplete="off"></el-input>
+          v-model="batchForm.fixCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="发码终止值"
+          <el-form-item label="发码起始值(含)"
           :label-width="formLabelWidth">
           <el-input
-           :disabled="fromToDisable"
-           v-model="form.to" autocomplete="off"></el-input>
+           v-model="batchForm.from" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="保存者" :label-width="formLabelWidth">
-          <el-input v-model="form.keeper" autocomplete="off"></el-input>
+          <el-form-item label="发码终止值(含)" :label-width="formLabelWidth">
+          <el-input v-model="batchForm.to" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="领退者" :label-width="formLabelWidth">
-          <el-input v-model="form.consumer" autocomplete="off"></el-input>
+         <el-form-item label="保管人" :label-width="formLabelWidth">
+          <el-input v-model="batchForm.keeper" autocomplete="off"></el-input>
+
+        </el-form-item>
+        <el-form-item label="领退人" :label-width="formLabelWidth">
+          <el-input v-model="batchForm.consumer" autocomplete="off"></el-input>
+
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogBatchFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleBatchSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+      <el-dialog :title="editTitle" :visible.sync="dialogFormVisible" width="700px">
+     <el-form :model="editForm" size="mini" label-position="right" >
+
+          <el-form-item label="固定码" :label-width="formLabelWidth">
+          <el-input v-model="editForm.fixCode" autocomplete="off"></el-input>
+        </el-form-item>
+          <el-form-item
+           label="发码" :label-width="formLabelWidth">
+          <el-input
+          v-model="editForm.childCode" autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="入库时间" :label-width="formLabelWidth">
+           <el-date-picker
+            v-model="editForm.storeTime"
+            type="date"
+            value-format="timestamp"
+            :picker-options="pickerOptions"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+         <el-form-item label="发出时间" :label-width="formLabelWidth">
+           <el-date-picker
+            v-model="editForm.sendTime"
+            type="date"
+            value-format="timestamp"
+            :picker-options="pickerOptions"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="退回时间" :label-width="formLabelWidth">
+           <el-date-picker
+            v-model="editForm.backTime"
+            type="date"
+            value-format="timestamp"
+            :picker-options="pickerOptions"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="使用时间" :label-width="formLabelWidth">
+           <el-date-picker
+            v-model="editForm.useTime"
+            type="date"
+            value-format="timestamp"
+            :picker-options="pickerOptions"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+
+         <el-form-item label="保管人" :label-width="formLabelWidth">
+          <el-input v-model="editForm.keeper" autocomplete="off"></el-input>
+
+        </el-form-item>
+        <el-form-item label="领退人" :label-width="formLabelWidth">
+          <el-input v-model="editForm.consumer" autocomplete="off"></el-input>
+
+        </el-form-item>
+        <el-form-item label="status" :label-width="formLabelWidth">
+           <el-select v-model="editForm.status" placeholder="请选择">
+            <el-option v-for="(option,index) in statusOptions"
+            :key="index"
+            :label="option.label"
+            :value="option.value"></el-option>
+          </el-select>
         </el-form-item>
 
       </el-form>
@@ -178,6 +275,22 @@ export default {
         queryValue: '',
         queryValue2: ''
       },
+      formInline: {
+        fixCode: '',
+        childCode: '',
+        from: '',
+        to: '',
+        status: ''
+      },
+      batchForm: {
+        date: '',
+        optType: '',
+        fixCode: '',
+        from: '',
+        to: '',
+        keeper: '',
+        consumer: ''
+      },
       formLabelWidth: '120px',
       pager: {
         pageNo: 1,
@@ -201,6 +314,20 @@ export default {
           value: 'fromTo'
         }
       ],
+      types: [
+        {
+          label: '0.5kg/柱',
+          value: 0
+        },
+        {
+          label: '1kg/柱',
+          value: 1
+        },
+        {
+          label: '2kg/柱',
+          value: 2
+        }
+      ],
       statusOptions: [
         {
           label: '入库',
@@ -220,18 +347,43 @@ export default {
         }
       ],
       tableData: [],
-      form: {
-        date: '',
-        optType: 1,
-        fixCode: '',
-        from: '',
-        to: '',
+      editForm: {
+        id: '',
+        fixCode: 0,
+        childCode: 0,
+        storeTime: '',
+        sendTime: '',
+        backTime: '',
+        useTime: '',
+        status: '',
         keeper: '',
         consumer: ''
       },
       isCreating: false,
       dialogFormVisible: false,
-      fromToDisable: false
+      dialogBatchFormVisible: false,
+      pickerOptions: {
+        shortcuts: [{
+          text: '今天',
+          onClick (picker) {
+            picker.$emit('pick', new Date())
+          }
+        }, {
+          text: '昨天',
+          onClick (picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '一周前',
+          onClick (picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', date)
+          }
+        }]
+      }
     }
   },
   computed: {
@@ -244,13 +396,8 @@ export default {
   },
   methods: {
     async getList () {
-      const params = {}
-      if (this.query.queryKey === 'fromTo') {
-        params.from = this.query.queryValue
-        params.to = this.query.queryValue2
-      } else {
-        params[this.query.queryKey] = this.query.queryValue
-      }
+      let params = {}
+      params = Object.assign({}, this.formInline)
       params.pageNo = this.pager.pageNo
       params.pageSize = this.pager.pageSize
       const res = await api.DETONATOR_LIST(params)
@@ -261,18 +408,21 @@ export default {
       // this.getList(params)
     },
     fixData (list) {
-      if (list.length === 0) return []
+      if ((!list) || list.length === 0) return []
       return list.map(it => {
-        it.displayStoreTime = util.timeFormat(it.storeTime)
-        it.displaySendTime = util.timeFormat(it.sendTime)
-        it.displayBackTime = util.timeFormat(it.backTime)
+        it.displayStoreTime = util.dateFormat(it.storeTime)
+        it.displaySendTime = util.dateFormat(it.sendTime)
+        it.displayBackTime = util.dateFormat(it.backTime)
         return it
       })
     },
-    handleSearchSelect (val) {
-      this.query.queryValue = ''
-      this.query.queryValue2 = ''
+    hadndleSearch () {
+      this.getList()
     },
+    // handleSearchSelect (val) {
+    //   this.query.queryValue = ''
+    //   this.query.queryValue2 = ''
+    // },
     handleCurrentChange (val) {
       if (val) {
         this.pager.pageNo = val
@@ -281,27 +431,25 @@ export default {
     },
     handleAdd () {
       this.isCreating = true
-      this.fromToDisable = false
-      this.form = {
-        optType: 1,
-        from: '',
-        to: '',
-        fixCode: '',
+      this.batchForm = {
+        optType: '',
+        batchNum: '',
+        boxFrom: '',
+        boxTo: '',
+        type: '',
+        colFrom: '',
+        colTo: '',
         keeper: '',
         consumer: ''
+
       }
-      this.dialogFormVisible = true
+      this.dialogBatchFormVisible = true
     },
     handleEdit (row) {
       this.isCreating = false
       const data = Object.assign({}, row)
-      data.from = data.childCode
-      data.to = data.childCode
-      this.fromToDisable = true
-
       this.form = Object.assign(this.form, data)
       this.dialogFormVisible = true
-      console.log(this.fromToDisable)
     },
 
     handleDelete (row) {
@@ -334,9 +482,29 @@ export default {
           })
         })
     },
-    handleSubmit () {
-      this.dialogFormVisible = false
-      console.log(this.form)
+    async handleSubmit () {
+      const sdata = Object.assign({}, this.editForm)
+      const res = await api.DETONATOR_UPDATE(sdata)
+      if (res && res >= 0) {
+        this.$message.success('操作成功')
+        this.dialogFormVisible = false
+      } else {
+        this.$message.error('操作失败')
+      }
+    },
+    async handleBatchSubmit () {
+      const sdata = Object.assign({}, this.batchForm)
+      const res = await api.DETONATOR_BATCH(sdata)
+      if (res && res >= 0) {
+        this.$message.success('批量操作成功')
+        this.dialogBatchFormVisible = false
+      } else {
+        this.$message.error('批量操作失败')
+      }
+    },
+    getToday () {
+      const date = +new Date()
+      return date % (60 * 60 * 1000 * 24)
     }
   }
 }

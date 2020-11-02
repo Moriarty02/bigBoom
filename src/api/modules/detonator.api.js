@@ -15,7 +15,15 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     // 接口请求
     return service({
       url: '/api/leiguan/batch',
-      method: 'get',
+      method: 'post',
+      data
+    })
+  },
+  DETONATOR_UPDATE (data = {}) {
+    // 接口请求
+    return service({
+      url: '/api/leiguan',
+      method: 'put',
       data
     })
   },
@@ -23,8 +31,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
     // 接口请求
     return service({
       url: '/api/leiguan/log' + tools.getQueryString(data),
-      method: 'get',
-      data
+      method: 'get'
     })
   }
 

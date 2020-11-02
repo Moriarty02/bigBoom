@@ -415,7 +415,7 @@ export default {
       ],
       videoTypeOptions: [
         {
-          label: '交接发放视频',
+          label: '警卫班视频',
           value: 1
         },
         {
@@ -423,7 +423,7 @@ export default {
           value: 2
         },
         {
-          label: '下药视频',
+          label: '包药视频',
           value: 3
         },
         {
@@ -510,38 +510,12 @@ export default {
     this.getList()
   },
   methods: {
-    testData () {
-      return {
-        total: 1,
-        detailList: [
-          {
-            id: 1,
-            date: 1604172246915,
-            lineNum: 0,
-            stakeNum: '580021',
-            height: 3,
-            fixCode: '152010',
-            childCode: 1,
-            batchNum: 'batch1',
-            boxNum: 1,
-            colNum: '1-3',
-            count: 2.0,
-            down: '下药工姓名',
-            packager: '包药工姓名',
-            mark: '备注',
-            videos: {
-              guardVideo: '警卫班视频',
-              sendVideo: '交接发放视频',
-              packageVideo: '包药视频',
-              useVideo: '下药视频',
-              badVideo: '废盲炮视频'
-            }
-          }
-        ]
-      }
-    },
     videoTagClick (url) {
-      this.$message.success(url)
+      if (url.startsWith('http') || url.startsWith('https')) {
+        window.open(url)
+      } else {
+        this.$message.error('无法打开' + url)
+      }
     },
     async getList () {
       let params = {}
