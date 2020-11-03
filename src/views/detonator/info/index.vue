@@ -20,7 +20,7 @@
             <el-input v-model="formInline.to" placeholder=""></el-input>
           </el-form-item>
           <el-form-item label="状态">
-            <el-select v-model="formInline.status" placeholder="状态">
+            <el-select v-model="formInline.status" clearable placeholder="状态">
               <el-option
               v-for="(item,key) in statusOptions"
               :key="key"
@@ -81,6 +81,12 @@
             label="归还时间"
             width="160">
           </el-table-column>
+           <el-table-column
+
+            prop="displayUseTime"
+            label="使用时间"
+            width="160">
+          </el-table-column>
              <el-table-column
             prop="keeper"
             label="保管人"
@@ -95,6 +101,7 @@
            <el-table-column
             prop="status"
             label="状态"
+            clearable
             width="100">
              <template slot-scope="scope">
 
@@ -243,7 +250,7 @@
           <el-input v-model="editForm.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item label="状态" clearable :label-width="formLabelWidth">
            <el-select v-model="editForm.status" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
@@ -410,9 +417,12 @@ export default {
     fixData (list) {
       if ((!list) || list.length === 0) return []
       return list.map(it => {
+        // it.useTime = it.useTime || ''
         it.displayStoreTime = util.dateFormat(it.storeTime)
         it.displaySendTime = util.dateFormat(it.sendTime)
         it.displayBackTime = util.dateFormat(it.backTime)
+        it.displayUseTime = util.dateFormat(it.useTime)
+
         return it
       })
     },
@@ -448,7 +458,7 @@ export default {
     handleEdit (row) {
       this.isCreating = false
       const data = Object.assign({}, row)
-      this.form = Object.assign(this.form, data)
+      this.form = Object.assign(this.editForm, data)
       this.dialogFormVisible = true
     },
 

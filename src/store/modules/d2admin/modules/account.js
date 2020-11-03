@@ -3,6 +3,8 @@ import util from '@/libs/util.js'
 import router from '@/router'
 import api from '@/api'
 
+import { menuAside } from '@/menu'
+
 export default {
   namespaced: true,
   actions: {
@@ -13,12 +15,20 @@ export default {
      * @param {Object} payload password {String} 密码
      * @param {Object} payload route {Object} 登录成功后定向的路由对象 任何 vue-router 支持的格式
      */
-    async login ({ dispatch }, {
+    async login ({ commit, dispatch }, {
       username = '',
       password = ''
     } = {}) {
       const res = await api.SYS_USER_LOGIN({ username, password })
       res.token = res.phoneNumber
+
+      let newMenuAside = menuAside.slice()
+      if (res.role !== 1) {
+        // 设置侧边栏菜单
+        newMenuAside = newMenuAside.filter(it => it.title !== '人员管理')
+      }
+      commit('d2admin/menu/asideSet', newMenuAside, { root: true })
+
       // 设置 cookie 一定要存 uuid 和 token 两个 cookie
       // 整个系统依赖这两个数据进行校验和存储
       // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复

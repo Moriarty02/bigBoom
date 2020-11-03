@@ -24,7 +24,7 @@
             <el-input v-model="formInline.colTo" placeholder=""></el-input>
         </el-form-item>
 
-          <el-form-item label="状态">
+          <el-form-item label="状态" clearable>
             <el-select v-model="formInline.status" placeholder="状态">
               <el-option
               v-for="(item,key) in statusOptions"
@@ -87,6 +87,12 @@
 
             prop="displaySendTime"
             label="入库时间"
+            width="160">
+          </el-table-column>
+            <el-table-column
+
+            prop="displayUseTime"
+            label="使用时间"
             width="160">
           </el-table-column>
             <el-table-column
@@ -192,11 +198,11 @@
           </el-select>
         </el-form-item>
          <el-form-item label="保管人" :label-width="formLabelWidth">
-          <el-input v-model="form.keeper" autocomplete="off"></el-input>
+          <el-input v-model="batchForm.keeper" autocomplete="off"></el-input>
 
         </el-form-item>
         <el-form-item label="领退人" :label-width="formLabelWidth">
-          <el-input v-model="form.consumer" autocomplete="off"></el-input>
+          <el-input v-model="batchForm.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
 
@@ -270,7 +276,7 @@
           <el-input v-model="form.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item label="状态" clearable :label-width="formLabelWidth">
            <el-select v-model="form.status" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
@@ -446,6 +452,8 @@ export default {
         it.displayStoreTime = util.dateFormat(it.storeTime)
         it.displaySendTime = util.dateFormat(it.sendTime)
         it.displayBackTime = util.dateFormat(it.backTime)
+        it.displayUseTime = util.dateFormat(it.useTime)
+
         return it
       })
     },

@@ -189,9 +189,7 @@ export default {
 
       const res = await api.SYS_USER_LIST(params)
       if (res.users && res.users.length > 0) {
-        console.log(res.users)
         this.tableData = res.users
-        console.log(this.tableData)
         this.pager.total = res.total
       }
       // this.getList(params)
@@ -254,7 +252,6 @@ export default {
     async handleSubmit () {
       this.dialogFormVisible = false
       const sdata = Object.assign({}, this.form)
-      delete sdata.id
       let res
       if (this.isCreating) {
         res = await api.SYS_USER_ADD(sdata)

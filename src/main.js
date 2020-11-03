@@ -13,6 +13,7 @@ import router from './router'
 import { menuAside } from '@/menu'
 
 import { frameInRoutes } from '@/router/routes'
+// import api from '@/api'
 
 // 核心插件
 Vue.use(d2Admin)
@@ -31,6 +32,23 @@ new Vue({
     this.$store.commit('d2admin/menu/asideSet', menuAside)
     // 初始化菜单搜索功能
     // this.$store.commit('d2admin/search/init', menuHeader)
+  },
+  methods: {
+
+    // setLeftMenuByRole () {
+    //   service({
+    //     url: '/user/getRoles'
+    //   })
+    //     .then(res => {
+    //       const roleNames = res.map(it => it.name)
+    //       let newMenuAside = menuAside.slice()
+    //       if (roleNames.indexOf('admin') === -1) {
+    //         // 设置侧边栏菜单
+    //         newMenuAside = newMenuAside.filter(it => it.title !== '系统状态')
+    //       }
+    //       this.$store.commit('d2admin/menu/asideSet', newMenuAside)
+    //     })
+    // }
   },
   mounted () {
     // 展示系统信息

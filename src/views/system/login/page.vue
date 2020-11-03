@@ -147,13 +147,6 @@ export default {
             message: '请输入密码',
             trigger: 'blur'
           }
-        ],
-        code: [
-          {
-            required: true,
-            message: '请输入验证码',
-            trigger: 'blur'
-          }
         ]
       }
     }
@@ -196,7 +189,7 @@ export default {
             username: this.formLogin.username,
             password: this.formLogin.password
           })
-            .then(() => {
+            .then((res) => {
               // 重定向对象不存在则返回顶层路径
               this.$router.replace(this.$route.query.redirect || '/')
             })

@@ -62,6 +62,7 @@
 
 <script>
 import api from '@/api'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'settings',
@@ -120,6 +121,9 @@ export default {
     this.getOwnerInfo()
   },
   methods: {
+    ...mapActions('d2admin/account', [
+      'logout'
+    ]),
     async getOwnerInfo () {
       const res = await api.SYS_USER_OWN()
       if (res) {
@@ -132,13 +136,22 @@ export default {
       this.formUpdatePwd.id = id
       this.dialogFormVisible = true
     },
+    logOff () {
+      this.logout({
+        confirm: false
+      })
+    },
     submitUpdatePwd () {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           const data = Object.assign({}, this.formUpdatePwd)
           const res = await api.SYS_USER_UPDATE_PWD(data)
           if (res) {
-            this.$message.success('修改成功')
+            this.dialogFormVisible = false
+            this.$message.success('修改成功,即将登出')
+            setTimeout(() => {
+              this.logOff()
+            }, 2000)
           }
         } else {
           return false
