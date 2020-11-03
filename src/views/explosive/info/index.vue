@@ -4,27 +4,27 @@
       <div class="module-header">
        <div class="left-box">
         <el-form :inline="true" size="mini" :model="formInline" class="demo-form-inline">
-          <el-form-item label="batchNum">
+          <el-form-item label="批次号">
             <el-input v-model="formInline.batchNum" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="boxFrom">
+          <el-form-item label="箱号起始值">
             <el-input v-model="formInline.boxFrom" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="boxTo">
+          <el-form-item label="箱号结束值">
             <el-input v-model="formInline.boxTo" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="colFrom">
+          <el-form-item label="柱号起始值">
             <el-input v-model="formInline.colFrom" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="colTo">
+          <el-form-item label="柱号结束值">
             <el-input v-model="formInline.colTo" placeholder=""></el-input>
         </el-form-item>
 
-          <el-form-item label="status">
+          <el-form-item label="状态">
             <el-select v-model="formInline.status" placeholder="状态">
               <el-option
               v-for="(item,key) in statusOptions"
@@ -59,56 +59,56 @@
             <el-table-column
 
             prop="batchNum"
-            label="batchNum"
+            label="批次号"
             width="100">
           </el-table-column>
             <el-table-column
 
             prop="boxNum"
-            label="boxNum"
+            label="箱号"
             width="100">
           </el-table-column>
           <el-table-column
             prop="colNum"
-            label="colNum"
+            label="柱号"
             width="100">
           </el-table-column>
           <el-table-column
             prop="unit"
-            label="unit"
+            label="重量"
             width="100">
           </el-table-column>
             <el-table-column
             prop="displayStoreTime"
-            label="storeTime"
+            label="入库时间"
             width="160">
           </el-table-column>
             <el-table-column
 
             prop="displaySendTime"
-            label="sendTime"
+            label="入库时间"
             width="160">
           </el-table-column>
             <el-table-column
 
             prop="displayBackTime"
-            label="backTime"
+            label="退回时间"
             width="160">
           </el-table-column>
              <el-table-column
             prop="keeper"
-            label="keeper"
+            label="保管人"
             width="100">
           </el-table-column>
            <el-table-column
 
             prop="consumer"
-            label="consumer"
+            label="领退人"
             width="100">
           </el-table-column>
            <el-table-column
             prop="status"
-            label="status"
+            label="状态"
             width="100">
              <template slot-scope="scope">
 
@@ -132,7 +132,7 @@
             width="200">
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
-              <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button>
+              <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -147,8 +147,16 @@
     </d2-module>
     <el-dialog title="批量操作" :visible.sync="dialogBatchFormVisible" width="700px">
      <el-form :model="batchForm" size="mini" label-position="right" >
-
-         <el-form-item label="optType" :label-width="formLabelWidth">
+         <el-form-item label="入库时间" :label-width="formLabelWidth">
+           <el-date-picker
+            v-model="batchForm.date"
+            type="date"
+            value-format="timestamp"
+            :picker-options="pickerOptions"
+            placeholder="选择日期时间">
+          </el-date-picker>
+         </el-form-item>
+         <el-form-item label="操作类型" :label-width="formLabelWidth">
            <el-select v-model="batchForm.optType" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
@@ -157,25 +165,25 @@
           </el-select>
         </el-form-item>
           <el-form-item
-           label="boxNum" :label-width="formLabelWidth">
+           label="批次号" :label-width="formLabelWidth">
           <el-input
           v-model="batchForm.batchNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="boxFrom"
+          <el-form-item label="箱号起始值"
           :label-width="formLabelWidth">
           <el-input
            v-model="batchForm.boxFrom" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="boxTo" :label-width="formLabelWidth">
+          <el-form-item label="箱号结束值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.boxTo" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colFrom" :label-width="formLabelWidth">
+          <el-form-item label="柱号起始值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.colFrom" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colTo" :label-width="formLabelWidth">
+          <el-form-item label="柱号结束值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.colTo" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="type" :label-width="formLabelWidth">
+         <el-form-item label="炸药规格" :label-width="formLabelWidth">
            <el-select v-model="batchForm.type" placeholder="请选择">
             <el-option v-for="(option,index) in types"
             :key="index"
@@ -183,11 +191,11 @@
             :value="option.value"></el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="keeper" :label-width="formLabelWidth">
+         <el-form-item label="保管人" :label-width="formLabelWidth">
           <el-input v-model="form.keeper" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="consumer" :label-width="formLabelWidth">
+        <el-form-item label="领退人" :label-width="formLabelWidth">
           <el-input v-model="form.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
@@ -201,23 +209,23 @@
       <el-dialog :title="editTitle" :visible.sync="dialogFormVisible" width="700px">
      <el-form :model="form" size="mini" label-position="right" >
 
-          <el-form-item label="batchNum" :label-width="formLabelWidth">
+          <el-form-item label="批次号" :label-width="formLabelWidth">
           <el-input v-model="form.batchNum" autocomplete="off"></el-input>
         </el-form-item>
           <el-form-item
-           label="boxNum" :label-width="formLabelWidth">
+           label="箱号" :label-width="formLabelWidth">
           <el-input
           v-model="form.boxNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colNum"
+          <el-form-item label="柱号"
           :label-width="formLabelWidth">
           <el-input
            v-model="form.colNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="unit" :label-width="formLabelWidth">
+          <el-form-item label="重量" :label-width="formLabelWidth">
           <el-input v-model="form.unit" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="storeTime" :label-width="formLabelWidth">
+         <el-form-item label="入库时间" :label-width="formLabelWidth">
            <el-date-picker
             v-model="form.storeTime"
             type="date"
@@ -226,7 +234,7 @@
             placeholder="选择日期时间">
           </el-date-picker>
         </el-form-item>
-         <el-form-item label="sendTime" :label-width="formLabelWidth">
+         <el-form-item label="发出时间" :label-width="formLabelWidth">
            <el-date-picker
             v-model="form.sendTime"
             type="date"
@@ -235,7 +243,7 @@
             placeholder="选择日期时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="backTime" :label-width="formLabelWidth">
+        <el-form-item label="退回时间" :label-width="formLabelWidth">
            <el-date-picker
             v-model="form.backTime"
             type="date"
@@ -244,7 +252,7 @@
             placeholder="选择日期时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="useTime" :label-width="formLabelWidth">
+        <el-form-item label="使用时间" :label-width="formLabelWidth">
            <el-date-picker
             v-model="form.useTime"
             type="date"
@@ -254,15 +262,15 @@
           </el-date-picker>
         </el-form-item>
 
-         <el-form-item label="keeper" :label-width="formLabelWidth">
+         <el-form-item label="保管人" :label-width="formLabelWidth">
           <el-input v-model="form.keeper" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="consumer" :label-width="formLabelWidth">
+        <el-form-item label="领退人" :label-width="formLabelWidth">
           <el-input v-model="form.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="status" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth">
            <el-select v-model="form.status" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
@@ -311,7 +319,8 @@ export default {
         colFrom: '',
         colTo: '',
         keeper: '',
-        consumer: ''
+        consumer: '',
+        date: ''
 
       },
       formLabelWidth: '120px',
@@ -521,9 +530,7 @@ export default {
     },
     async handleBatchSubmit () {
       const sdata = Object.assign({}, this.batchForm)
-      const today = this.getToday()
-      sdata.date = today
-      const res = await api.EXPLOSIVE_BATCH()
+      const res = await api.EXPLOSIVE_BATCH(sdata)
       if (res && res >= 0) {
         this.$message.success('批量操作成功')
         this.dialogBatchFormVisible = false

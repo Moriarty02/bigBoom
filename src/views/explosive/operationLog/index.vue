@@ -26,6 +26,8 @@
      </div>
     </template>
     <d2-module>
+    <p> 当天库存:{{stock}}</p>
+
       <div class="table-box">
        <el-table
           :data="tableData"
@@ -49,7 +51,7 @@
           </el-table-column>
             <el-table-column
             prop="fixCode"
-            label="fixCode"
+            label="固定码"
             >
           </el-table-column>
             <el-table-column
@@ -112,13 +114,13 @@
             </template>
           </el-table-column> -->
         </el-table>
-        <d2-pagination
-                marginTop
-                :currentPage='pager.pageNo'
-                :pageSize='pager.pageSize'
-                :total='pager.total'
-                @doCurrentChange='handleCurrentChange'>
-            </d2-pagination>
+          <el-pagination
+          :current-page.sync="pager.pageNo"
+          :page-size="10"
+           @current-change="handleCurrentChange"
+          layout="total, prev, pager, next"
+          :total="pager.total">
+        </el-pagination>
       </div>
     </d2-module>
       <el-dialog :title="editTitle" :visible.sync="dialogFormVisible" width="700px">
@@ -129,13 +131,13 @@
           <el-form-item label="name" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="fixCode" :label-width="formLabelWidth">
+          <el-form-item label="固定码" :label-width="formLabelWidth">
           <el-input v-model="form.fixCode" autocomplete="off"></el-input>
         </el-form-item>
           <el-form-item label="publicCode" :label-width="formLabelWidth">
           <el-input v-model="form.publicCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="count" :label-width="formLabelWidth">
+          <el-form-item label=" 重量" :label-width="formLabelWidth">
           <el-input v-model="form.count" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -160,6 +162,7 @@ export default {
         queryKey: 'id',
         queryValue: ''
       },
+      stock: 0,
       formLabelWidth: '120px',
       pager: {
         pageNo: 1,
@@ -217,13 +220,14 @@ export default {
   methods: {
     async getList () {
       const params = {}
-      if (this.query.queryValue) {
-        params.date = this.query.queryValue
-      }
-      params.date = ''
+      params.date = this.query.queryValue
+      params.pageNo = this.pager.pageNo
+      params.pageSize = this.pager.pageSize
+
       const res = await api.EXPLOSIVE_LOG(params)
       if (res) {
         this.tableData = this.fixData(res.records)
+        this.stock = res.stock
         this.pager.total = res.total
       }
     },

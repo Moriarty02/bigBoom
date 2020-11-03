@@ -25,6 +25,10 @@
           <!-- logo -->
           <!-- <img class="page-login--logo" src="./image/logo@2x.png"> -->
           <!-- form -->
+        <div class="title-box">
+            <p class="d2-page-cover__title">民爆信息管理系统</p>
+             <p class="d2-page-cover__sub-title">中石化石油工程地球物理有限公司胜利分公司SGC2105队</p>
+        </div>
           <div class="page-login--form">
             <el-card shadow="never">
               <el-form
@@ -209,9 +213,10 @@ export default {
 <style lang="scss">
 .page-login {
   @extend %unable-select;
-  $backgroundColor: #F0F2F5;
+  // $backgroundColor: #c8edfc;
+   background-image: linear-gradient(to bottom right, #c8edfc, #00bfff);
   // ---
-  background-color: $backgroundColor;
+  // background-color: $backgroundColor;
   height: 100%;
   position: relative;
   // 层
@@ -452,4 +457,23 @@ export default {
     }
   }
 }
+.title-box{
+  width:450px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+  .d2-page-cover__title {
+    margin: 0px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 28px;
+    color: $color-text-main;
+  }
+  .d2-page-cover__sub-title {
+    margin: 0px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: $color-text-normal;
+  }
+
 </style>

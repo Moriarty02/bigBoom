@@ -3,8 +3,9 @@
     <div class="d2-page-cover__logo">
       <slot/>
     </div>
-    <p class="d2-page-cover__title"> 物探</p>
-    <!-- <p class="d2-page-cover__sub-title">优雅的中后台集成方案</p>
+    <p class="d2-page-cover__title">民爆信息管理系统</p>
+     <p class="d2-page-cover__sub-title">中石化石油工程地球物理有限公司胜利分公司SGC2105队</p>
+    <!--
     <p class="d2-page-cover__build-time">FINAL BUILD TIME {{$buildTime}}</p> -->
     <slot name="footer"/>
 

@@ -6,6 +6,10 @@
         <d2-icon name="power-off" class="d2-mr-5"/>
         注销
       </el-dropdown-item>
+       <el-dropdown-item @click.native="handleUserCenter">
+        <d2-icon name="user" class="d2-mr-5"/>
+        个人中心
+      </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -28,6 +32,11 @@ export default {
     logOff () {
       this.logout({
         confirm: true
+      })
+    },
+    handleUserCenter () {
+      this.$router.push({
+        path: '/userCenter'
       })
     }
   }

@@ -22,7 +22,7 @@
             <el-input v-model="formInline.stakeNum" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="colFrom">
+          <el-form-item label="柱号起始值">
             <el-input v-model="formInline.colFrom" placeholder=""></el-input>
           </el-form-item>
 
@@ -39,7 +39,7 @@
             <el-input v-model="formInline.boxNum" placeholder=""></el-input>
         </el-form-item>
 
-          <!-- <el-form-item label="status">
+          <!-- <el-form-item label="状态">
             <el-select v-model="formInline.status" placeholder="状态">
               <el-option
               v-for="(item,key) in statusOptions"
@@ -80,59 +80,59 @@
             <el-table-column
 
             prop="lineNum"
-            label="lineNum"
+            label="线束号"
             width="100">
           </el-table-column>
           <el-table-column
             prop="stakeNum"
-            label="stakeNum"
+            label="桩号"
             width="100">
           </el-table-column>
           <el-table-column
             prop="height"
-            label="height"
+            label="井深"
             width="100">
           </el-table-column>
             <el-table-column
             prop="fixCode"
-            label="fixCode"
+            label="固定码"
             width="100">
           </el-table-column>
             <el-table-column
 
             prop="childCode"
-            label="childCode"
+            label="发码"
             width="100">
           </el-table-column>
             <el-table-column
 
             prop="batchNum"
-            label="batchNum"
+            label="批次号"
             width="100">
           </el-table-column>
           <el-table-column
             prop="boxNum"
-            label="boxNum"
+            label="箱号"
             width="100">
           </el-table-column>
            <el-table-column
             prop="colNum"
-            label="colNum"
+            label="柱号"
             width="100">
           </el-table-column>
            <el-table-column
             prop="count"
-            label="count"
+            label=" 重量"
             width="100">
           </el-table-column>
              <el-table-column
             prop="down"
-            label="down"
+            label=" 下药工"
             width="100">
           </el-table-column>
            <el-table-column
             prop="packager"
-            label="packager"
+            label=" 包药工"
             width="100">
           </el-table-column>
             <el-table-column
@@ -178,16 +178,18 @@
 
            <el-table-column
             prop="mark"
-            label="mark"
+            label="备注"
             width="100">
           </el-table-column>
 
           <el-table-column
             fixed="right"
             label="操作"
-            width="200">
+            width="240">
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
+
+              <el-button @click="handleCopy(scope.row)" type="primary" size="small">复制</el-button>
               <el-button @click="handleVideo(scope.row)" type="primary" size="small">更新视频</el-button>
               <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->
             </template>
@@ -206,7 +208,7 @@
     <el-dialog title="新增" :visible.sync="dialogFormVisible" width="700px">
      <el-form :model="batchForm" size="mini" label-position="right" >
 
-         <el-form-item label="optType" :label-width="formLabelWidth">
+         <el-form-item label="操作类型" :label-width="formLabelWidth">
            <el-select v-model="batchForm.optType" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"
@@ -215,25 +217,25 @@
           </el-select>
         </el-form-item>
           <el-form-item
-           label="boxNum" :label-width="formLabelWidth">
+           label="箱号" :label-width="formLabelWidth">
           <el-input
           v-model="batchForm.batchNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="boxFrom"
+          <el-form-item label="箱号起始值"
           :label-width="formLabelWidth">
           <el-input
            v-model="batchForm.boxFrom" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="boxTo" :label-width="formLabelWidth">
+          <el-form-item label="箱号结束值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.boxTo" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colFrom" :label-width="formLabelWidth">
+          <el-form-item label="柱号起始值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.colFrom" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colTo" :label-width="formLabelWidth">
+          <el-form-item label="柱号结束值" :label-width="formLabelWidth">
           <el-input v-model="batchForm.colTo" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="type" :label-width="formLabelWidth">
+         <el-form-item label="炸药规格" :label-width="formLabelWidth">
            <el-select v-model="batchForm.type" placeholder="请选择">
             <el-option v-for="(option,index) in types"
             :key="index"
@@ -241,11 +243,11 @@
             :value="option.value"></el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="keeper" :label-width="formLabelWidth">
+         <el-form-item label="保管人" :label-width="formLabelWidth">
           <el-input v-model="form.keeper" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="consumer" :label-width="formLabelWidth">
+        <el-form-item label="领退人" :label-width="formLabelWidth">
           <el-input v-model="form.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
@@ -269,43 +271,43 @@
           </el-date-picker>
         </el-form-item>
           <el-form-item
-           label="lineNum" :label-width="formLabelWidth">
+           label="线束号" :label-width="formLabelWidth">
           <el-input
           v-model="form.lineNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="stakeNum"
+          <el-form-item label="桩号"
           :label-width="formLabelWidth">
           <el-input
            v-model="form.stakeNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="height" :label-width="formLabelWidth">
+          <el-form-item label="井深" :label-width="formLabelWidth">
           <el-input v-model="form.height" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="fixCode" :label-width="formLabelWidth">
+         <el-form-item label="固定码" :label-width="formLabelWidth">
           <el-input v-model="form.fixCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="childCode" :label-width="formLabelWidth">
+          <el-form-item label="发码" :label-width="formLabelWidth">
           <el-input v-model="form.childCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="batchNum" :label-width="formLabelWidth">
+          <el-form-item label="批次号" :label-width="formLabelWidth">
           <el-input v-model="form.batchNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="boxNum" :label-width="formLabelWidth">
+          <el-form-item label="箱号" :label-width="formLabelWidth">
           <el-input v-model="form.boxNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="colNum" :label-width="formLabelWidth">
+          <el-form-item label="柱号" :label-width="formLabelWidth">
           <el-input v-model="form.colNum" autocomplete="off"></el-input>
         </el-form-item>
 
-         <el-form-item label="down" :label-width="formLabelWidth">
+         <el-form-item label=" 下药工" :label-width="formLabelWidth">
           <el-input v-model="form.down" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="packager" :label-width="formLabelWidth">
+        <el-form-item label=" 包药工" :label-width="formLabelWidth">
           <el-input v-model="form.packager" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="mark" :label-width="formLabelWidth">
+        <el-form-item label="备注" :label-width="formLabelWidth">
           <el-input v-model="form.mark" autocomplete="off"></el-input>
 
         </el-form-item>
@@ -582,6 +584,13 @@ export default {
     handleEdit (row) {
       this.isCreating = false
       const data = Object.assign({}, row)
+      this.form = Object.assign(this.form, data)
+      this.dialogFormVisible = true
+    },
+    handleCopy (row) {
+      this.isCreating = true
+      const data = Object.assign({}, row)
+      delete data.id
       this.form = Object.assign(this.form, data)
       this.dialogFormVisible = true
     },

@@ -19,7 +19,7 @@
           <el-form-item label="子码范围搜索终止值">
             <el-input v-model="formInline.to" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="status">
+          <el-form-item label="状态">
             <el-select v-model="formInline.status" placeholder="状态">
               <el-option
               v-for="(item,key) in statusOptions"
@@ -243,7 +243,7 @@
           <el-input v-model="editForm.consumer" autocomplete="off"></el-input>
 
         </el-form-item>
-        <el-form-item label="status" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth">
            <el-select v-model="editForm.status" placeholder="请选择">
             <el-option v-for="(option,index) in statusOptions"
             :key="index"

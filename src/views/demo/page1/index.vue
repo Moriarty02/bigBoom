@@ -52,7 +52,7 @@
             <el-table-column
             fixed
             prop="fixCode"
-            label="fixCode"
+            label="固定码"
             width="150">
           </el-table-column>
             <el-table-column
@@ -64,7 +64,7 @@
             <el-table-column
             fixed
             prop="count"
-            label="count"
+            label=" 重量"
             width="150">
           </el-table-column>
           <el-table-column
@@ -94,13 +94,13 @@
           <el-form-item label="name" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="fixCode" :label-width="formLabelWidth">
+          <el-form-item label="固定码" :label-width="formLabelWidth">
           <el-input v-model="form.fixCode" autocomplete="off"></el-input>
         </el-form-item>
           <el-form-item label="publicCode" :label-width="formLabelWidth">
           <el-input v-model="form.publicCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="count" :label-width="formLabelWidth">
+          <el-form-item label=" 重量" :label-width="formLabelWidth">
           <el-input v-model="form.count" autocomplete="off"></el-input>
         </el-form-item>
 
