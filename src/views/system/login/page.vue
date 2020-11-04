@@ -1,16 +1,43 @@
 <template>
   <div class="page-login">
-    <div class="page-login--layer page-login--layer-area">
+    <div class="login-header">
+      <div class="header-img"></div>
+    </div>
+    <!-- <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
         <li v-for="n in 10" :key="n"></li>
       </ul>
-    </div>
-    <div
+    </div> -->
+    <!-- <div
       class="page-login--layer page-login--layer-time"
       flex="main:center cross:center">
       {{time}}
-    </div>
+    </div> -->
     <div class="page-login--layer">
+      <el-carousel class="carousel">
+      <el-carousel-item height="100%">
+       <img class="carousel-img" src="./image/1.jpg" alt="">
+      </el-carousel-item>
+      <el-carousel-item>
+       <img class="carousel-img" src="./image/2.jpg" alt="">
+      </el-carousel-item>
+       <el-carousel-item>
+       <img class="carousel-img" src="./image/3.jpg" alt="">
+      </el-carousel-item>
+       <el-carousel-item>
+       <img class="carousel-img" src="./image/4.jpg" alt="">
+      </el-carousel-item>
+       <el-carousel-item>
+       <img class="carousel-img" src="./image/5.jpg" alt="">
+      </el-carousel-item>
+       <el-carousel-item>
+       <img class="carousel-img" src="./image/6.jpg" alt="">
+      </el-carousel-item>
+       <el-carousel-item>
+       <img class="carousel-img" src="./image/7.jpg" alt="">
+      </el-carousel-item>
+    </el-carousel>
+
       <div
         class="page-login--content"
         flex="dir:top main:center cross:stretch box:justify">
@@ -26,8 +53,8 @@
           <!-- <img class="page-login--logo" src="./image/logo@2x.png"> -->
           <!-- form -->
         <div class="title-box">
-            <p class="d2-page-cover__title">民爆信息管理系统</p>
-             <p class="d2-page-cover__sub-title">中石化石油工程地球物理有限公司胜利分公司SGC2105队</p>
+            <p class="d2-page-cover__title">{{ title}}</p>
+
         </div>
           <div class="page-login--form">
             <el-card shadow="never">
@@ -84,29 +111,12 @@
             </el-button> -->
           </div>
         </div>
-        <!-- <div class="page-login--content-footer">
-          <p class="page-login--content-footer-locales">
-            <a
-              v-for="language in $languages"
-              :key="language.value"
-              @click="onChangeLocale(language.value)">
-              {{ language.label }}
-            </a>
-          </p>
+        <div class="page-login--content-footer">
           <p class="page-login--content-footer-copyright">
-            Copyright
-            <d2-icon name="copyright"/>
-            2018 D2 Projects 开源组织出品
-            <a href="https://github.com/FairyEver">
-              @FairyEver
-            </a>
+            中石化石油工程地球物理有限公司胜利分公司SGC2105队
           </p>
-          <p class="page-login--content-footer-options">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="#">条款</a>
-          </p>
-        </div> -->
+
+        </div>
       </div>
     </div>
 
@@ -123,6 +133,8 @@ export default {
   ],
   data () {
     return {
+      title: '民爆信息管理系统',
+      // title: '测试',
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
       // 快速选择用户
@@ -204,7 +216,26 @@ export default {
 </script>
 
 <style lang="scss">
+.login-header{
+  position: relative;
+  z-index: 11;;
+  background: #FFF;
+.header-img{
+height: 50px;
+
+  background: url("./image/header.jpeg") left center no-repeat;
+}
+}
+.carousel-img{
+  width: 100%;
+  height:100%;
+  max-width: 100%;
+}
 .page-login {
+  .el-carousel__container{
+    height:100%;
+  }
+  position: relative;
   @extend %unable-select;
   // $backgroundColor: #c8edfc;
    background-image: linear-gradient(to bottom right, #c8edfc, #00bfff);
@@ -212,6 +243,12 @@ export default {
   // background-color: $backgroundColor;
   height: 100%;
   position: relative;
+  .carousel{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
   // 层
   .page-login--layer {
     @extend %full;
@@ -229,6 +266,8 @@ export default {
   }
   // 登陆页面控件的容器
   .page-login--content {
+    position: relative;
+    z-index:10;
     height: 100%;
     min-height: 500px;
   }
@@ -334,7 +373,8 @@ export default {
       font-size: 12px;
       line-height: 12px;
       text-align: center;
-      color: $color-text-normal;
+      color: #fff;
+      // color: $color-text-normal;
       a {
         color: $color-text-normal;
       }
@@ -460,6 +500,7 @@ export default {
     margin-bottom: 20px;
     font-weight: bold;
     font-size: 28px;
+    text-align: center;
     color: $color-text-main;
   }
   .d2-page-cover__sub-title {
