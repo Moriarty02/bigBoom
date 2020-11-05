@@ -22,9 +22,9 @@
             <el-input v-model="formInline.stakeNum" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="柱号起始值">
+          <!-- <el-form-item label="柱号起始值">
             <el-input v-model="formInline.colFrom" placeholder=""></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="雷管固定码">
             <el-input v-model="formInline.fixCode" placeholder=""></el-input>
@@ -37,6 +37,12 @@
         </el-form-item>
          <el-form-item label="炸药箱号">
             <el-input v-model="formInline.boxNum" placeholder=""></el-input>
+        </el-form-item>
+          <el-form-item label="下药工">
+            <el-input v-model="formInline.down" placeholder=""></el-input>
+        </el-form-item>
+          <el-form-item label="包药工">
+            <el-input v-model="formInline.packager" placeholder=""></el-input>
         </el-form-item>
 
           <!-- <el-form-item label="状态">
@@ -69,7 +75,7 @@
             fixed
             prop="id"
             label="id"
-            width="100">
+            width="50">
           </el-table-column>
             <el-table-column
 
@@ -81,49 +87,49 @@
 
             prop="lineNum"
             label="线束号"
-            width="100">
+            width="70">
           </el-table-column>
           <el-table-column
             prop="stakeNum"
             label="桩号"
-            width="100">
+            width="70">
           </el-table-column>
           <el-table-column
             prop="height"
             label="井深"
-            width="100">
+            width="60">
           </el-table-column>
             <el-table-column
             prop="fixCode"
             label="固定码"
-            width="100">
+            width="80">
           </el-table-column>
             <el-table-column
 
             prop="childCode"
             label="发码"
-            width="100">
+            width="60">
           </el-table-column>
             <el-table-column
 
             prop="batchNum"
             label="批次号"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             prop="boxNum"
             label="箱号"
-            width="100">
+            width="60">
           </el-table-column>
            <el-table-column
             prop="colNum"
             label="柱号"
-            width="100">
+            width="60">
           </el-table-column>
            <el-table-column
             prop="count"
             label=" 重量"
-            width="100">
+            width="60">
           </el-table-column>
              <el-table-column
             prop="down"
@@ -137,43 +143,47 @@
           </el-table-column>
             <el-table-column
             prop="guardVideo"
-            label="警卫班视频"
-            width="100">
+            label="警卫班"
+            width="70">
               <template slot-scope="scope">
-                <el-tag type="success" @click="videoTagClick(scope.row.guardVideo)">播放</el-tag>
+                <el-tag :type="scope.row.guardVideo!==''?'success':'error'" @click="videoTagClick(scope.row.guardVideo)">{{scope.row.guardVideo!==''?'播放':'未上传'}}</el-tag>
               </template>
           </el-table-column>
            <el-table-column
             prop="sendVideo"
-            label="交接发放视频"
-            width="110">
-              <template slot-scope="scope">
-                <el-tag type="success" @click="videoTagClick(scope.row.sendVideo)">播放</el-tag>
+            label="交接发放"
+            width="80">
+             <template slot-scope="scope">
+                <el-tag :type="scope.row.sendVideo!==''?'success':'error'" @click="videoTagClick(scope.row.sendVideo)">{{scope.row.sendVideo!==''?'播放':'未上传'}}</el-tag>
               </template>
+
           </el-table-column>
            <el-table-column
             prop="packageVideo"
-            label="包药视频"
-            width="100">
-              <template slot-scope="scope">
-                <el-tag type="success" @click="videoTagClick(scope.row.packageVideo)">播放</el-tag>
+            label="包药"
+            width="70">
+            <template slot-scope="scope">
+                <el-tag :type="scope.row.packageVideo!==''?'success':'error'" @click="videoTagClick(scope.row.packageVideo)">{{scope.row.packageVideo!==''?'播放':'未上传'}}</el-tag>
               </template>
+
           </el-table-column>
            <el-table-column
             prop="useVideo"
-            label="下药视频"
-            width="100">
-              <template slot-scope="scope">
-                <el-tag type="success" @click="videoTagClick(scope.row.useVideo)">播放</el-tag>
+            label="下药"
+            width="70">
+            <template slot-scope="scope">
+                <el-tag :type="scope.row.useVideo!==''?'success':'error'" @click="videoTagClick(scope.row.useVideo)">{{scope.row.useVideo!==''?'播放':'未上传'}}</el-tag>
               </template>
+
           </el-table-column>
            <el-table-column
             prop="badVideo"
-            label="废盲炮视频"
-            width="100">
-              <template slot-scope="scope">
-                <el-tag type="success" @click="videoTagClick(scope.row.badVideo)">播放</el-tag>
+            label="废盲炮"
+            width="70">
+            <template slot-scope="scope">
+                <el-tag :type="scope.row.badVideo!==''?'success':'error'" @click="videoTagClick(scope.row.badVideo)">{{scope.row.badVideo!==''?'播放':'未上传'}}</el-tag>
               </template>
+
           </el-table-column>
 
            <el-table-column
@@ -195,72 +205,22 @@
             </template>
           </el-table-column>
         </el-table>
-         <el-pagination
+        <div class="footer-box">
+           <el-pagination
           :current-page.sync="pager.pageNo"
           :page-size="10"
            @current-change="handleCurrentChange"
           layout="total, prev, pager, next"
           :total="pager.total">
         </el-pagination>
+                <el-button type="primary" size="mini" @click="handleDownload">下载明细</el-button>
+
+        </div>
       </div>
     </d2-module>
 
-    <el-dialog title="新增" :visible.sync="dialogFormVisible" width="700px">
-     <el-form :model="batchForm" size="mini" label-position="right" >
-
-         <el-form-item label="操作类型" :label-width="formLabelWidth">
-           <el-select v-model="batchForm.optType" placeholder="请选择">
-            <el-option v-for="(option,index) in statusOptions"
-            :key="index"
-            :label="option.label"
-            :value="option.value"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item
-           label="箱号" :label-width="formLabelWidth">
-          <el-input
-          v-model="batchForm.batchNum" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="箱号起始值"
-          :label-width="formLabelWidth">
-          <el-input
-           v-model="batchForm.boxFrom" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="箱号结束值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.boxTo" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="柱号起始值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.colFrom" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="柱号结束值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.colTo" autocomplete="off"></el-input>
-        </el-form-item>
-         <el-form-item label="炸药规格" :label-width="formLabelWidth">
-           <el-select v-model="batchForm.type" placeholder="请选择">
-            <el-option v-for="(option,index) in types"
-            :key="index"
-            :label="option.label"
-            :value="option.value"></el-option>
-          </el-select>
-        </el-form-item>
-         <el-form-item label="保管人" :label-width="formLabelWidth">
-          <el-input v-model="form.keeper" autocomplete="off"></el-input>
-
-        </el-form-item>
-        <el-form-item label="领退人" :label-width="formLabelWidth">
-          <el-input v-model="form.consumer" autocomplete="off"></el-input>
-
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
-      <el-dialog :title="editTitle" :visible.sync="dialogFormVisible" width="700px">
-     <el-form :model="form" size="mini" label-position="right" >
-
+      <el-dialog :title="editTitle" :visible.sync="dialogFormVisible"  width="700px">
+     <el-form :model="form" size="mini" label-position="right" :inline="true">
           <el-form-item label="日期" :label-width="formLabelWidth">
          <el-date-picker
             v-model="form.date"
@@ -286,7 +246,7 @@
          <el-form-item label="固定码" :label-width="formLabelWidth">
           <el-input v-model="form.fixCode" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="发码" :label-width="formLabelWidth">
+          <el-form-item label="发码" :class="isCopying?'form-focus':''" :label-width="formLabelWidth">
           <el-input v-model="form.childCode" autocomplete="off"></el-input>
         </el-form-item>
           <el-form-item label="批次号" :label-width="formLabelWidth">
@@ -295,7 +255,7 @@
           <el-form-item label="箱号" :label-width="formLabelWidth">
           <el-input v-model="form.boxNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="柱号" :label-width="formLabelWidth">
+          <el-form-item label="柱号" :class="isCopying?'form-focus':''" :label-width="formLabelWidth">
           <el-input v-model="form.colNum" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -352,11 +312,7 @@ export default {
   name: 'page1',
   data () {
     return {
-      query: {
-        queryKey: 'fixCode',
-        queryValue: '',
-        queryValue2: ''
-      },
+
       formInline: {
         date: '',
         lineNum: '',
@@ -364,7 +320,9 @@ export default {
         fixCode: '',
         childCode: '',
         batchNum: '',
-        boxNum: ''
+        boxNum: '',
+        down: '',
+        packager: ''
       },
       batchForm: {
         optType: '',
@@ -477,6 +435,7 @@ export default {
         videos: {}
       },
       isCreating: false,
+      isCopying: false,
       dialogFormVisible: false,
       dialogVideoFormVisible: false,
       pickerOptions: {
@@ -505,6 +464,9 @@ export default {
   },
   computed: {
     editTitle () {
+      if (this.isCopying) {
+        return '复制插入'
+      }
       return this.isCreating ? '新增' : '编辑' + '信息'
     }
   },
@@ -564,6 +526,7 @@ export default {
     },
     handleAdd () {
       this.isCreating = true
+      this.isCopying = false
       this.form = {
         date: '',
         lineNum: '',
@@ -583,12 +546,14 @@ export default {
     },
     handleEdit (row) {
       this.isCreating = false
+      this.isCopying = false
       const data = Object.assign({}, row)
       this.form = Object.assign(this.form, data)
       this.dialogFormVisible = true
     },
     handleCopy (row) {
       this.isCreating = true
+      this.isCopying = true
       const data = Object.assign({}, row)
       delete data.id
       this.form = Object.assign(this.form, data)
@@ -661,6 +626,13 @@ export default {
         this.$message.error('操作失败')
       }
     },
+    async handleDownload () {
+      const params = Object.assign({}, this.formInline)
+      const res = await api.DETAIL_DOWNLOAD(params)
+      if (res) {
+        window.location.href = res
+      }
+    },
     getToday () {
       const date = +new Date()
       return date % (60 * 60 * 1000 * 24)
@@ -670,6 +642,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .module-header{
+  display: flex;
+  justify-content: space-between;
+}
+.form-focus{
+  background: #F56C6C;
+}
+.footer-box{
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
 }

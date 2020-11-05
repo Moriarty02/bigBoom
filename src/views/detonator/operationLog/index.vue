@@ -6,22 +6,44 @@
          <el-form size="mini" inline>
 
         <el-form-item label="检索日期">
-        <el-date-picker
-      v-model="query.queryValue"
-      type="date"
-      value-format="timestamp"
-      :picker-options="pickerOptions"
-      placeholder="选择日期时间">
-    </el-date-picker>
+      <el-row :gutter="20" type="flex" justify="start">
+             <el-col :span="11">
+              <el-date-picker
+                    v-model="queryForm.startTime"
+                    type="date"
+                    value-format="timestamp"
+                    :picker-options="pickerOptions"
+                    placeholder="选择日期时间">
+                  </el-date-picker>
+
+             </el-col>
+             <el-col :span="4" class="line">-</el-col>
+             <el-col :span="16">
+               <el-date-picker
+                  v-model="queryForm.endTime"
+                  type="date"
+                  value-format="timestamp"
+                  :picker-options="pickerOptions"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+             </el-col>
+           </el-row>
         </el-form-item>
+         <el-form-item label="保管人">
+            <el-input v-model="queryForm.keeper" placeholder=""></el-input>
+          </el-form-item>
+           <el-form-item label="领退人">
+            <el-input v-model="queryForm.consumer" placeholder=""></el-input>
+          </el-form-item>
+
           <el-form-item>
           <el-button  @click="getList" type="primary" >查询</el-button>
         </el-form-item>
          </el-form>
        </div>
-       <div class="right-box">
-          <!-- <el-button  @click="handleAdd" type="primary" size="mini">新增</el-button> -->
-       </div>
+       <!-- <div class="right-box">
+           <el-button  @click="handleAdd" type="primary" size="mini">新增</el-button>
+       </div> -->
 
      </div>
     </template>
@@ -68,7 +90,7 @@
 
            <el-table-column
             prop="keeper"
-            label="库存人"
+            label="保管人"
             >
           </el-table-column>
            <el-table-column
@@ -99,11 +121,11 @@
             >
           </el-table-column>
 
-            <el-table-column
+            <!-- <el-table-column
             prop="consumed"
             label="已消耗"
             >
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column            fixed="right"
             label="操作"
             width="200">
@@ -157,9 +179,11 @@ export default {
   name: 'page1',
   data () {
     return {
-      query: {
-        queryKey: 'id',
-        queryValue: ''
+      queryForm: {
+        startTime: '',
+        endTime: '',
+        keeper: '',
+        consumer: ''
       },
       formLabelWidth: '120px',
       stock: 0,
@@ -218,14 +242,11 @@ export default {
   },
   methods: {
     async getList () {
-      const params = {}
-      if (this.query.queryValue) {
-        params.date = this.query.queryValue
-      } else {
-        params.date = ''
-      }
+      let params = Object.assign({}, this.queryForm)
+
       params.pageNo = this.pager.pageNo
       params.pageSize = this.pager.pageSize
+      params = util.fixEmptyVal(params)
 
       const res = await api.DETONATOR_LOG(params)
       if (res) {
@@ -308,5 +329,8 @@ export default {
 .module-header{
   display: flex;
   justify-content: space-between;
+}
+.line{
+  text-align: center;
 }
 </style>

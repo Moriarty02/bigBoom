@@ -78,5 +78,20 @@ util.dateFormat = (val) => {
   ret = Y + '-' + M + '-' + D
   return ret
 }
+util.fixEmpty = (val) => {
+  if (!val || val === 'undefined' || val === 'null' || val === null || typeof val === 'undefined') {
+    return ''
+  }
+  return val
+}
+util.fixEmptyVal = (obj = {}) => {
+  const newObj = {}
+  for (const item in obj) {
+    if (obj.hasOwnProperty(item)) {
+      newObj[item] = util.fixEmpty(obj[item])
+    }
+  }
+  return newObj
+}
 
 export default util

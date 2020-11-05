@@ -8,17 +8,18 @@
             <el-input v-model="formInline.fixCode" placeholder=""></el-input>
           </el-form-item>
 
-          <el-form-item label="子码">
+          <!-- <el-form-item label="子码">
             <el-input v-model="formInline.childCode" placeholder=""></el-input>
+          </el-form-item> -->
+
+          <el-form-item label="子码范围">
+            <el-row>
+               <el-col :span="8"><el-input  v-model="formInline.from" placeholder=""></el-input></el-col>
+            <el-col :span="4" class="ta-c">-</el-col>
+            <el-col :span="8"><el-input  v-model="formInline.to" placeholder=""></el-input></el-col>
+            </el-row>
           </el-form-item>
 
-          <el-form-item label="子码范围搜索起始值">
-            <el-input v-model="formInline.from" placeholder=""></el-input>
-          </el-form-item>
-
-          <el-form-item label="子码范围搜索终止值">
-            <el-input v-model="formInline.to" placeholder=""></el-input>
-          </el-form-item>
           <el-form-item label="状态">
             <el-select v-model="formInline.status" clearable placeholder="状态">
               <el-option
@@ -26,6 +27,12 @@
               :key="key"
               :label="item.label" :value="item.value"></el-option>
             </el-select>
+          </el-form-item>
+           <el-form-item label="保管人">
+            <el-input v-model="formInline.keeper" placeholder=""></el-input>
+          </el-form-item>
+           <el-form-item label="领退人">
+            <el-input v-model="formInline.consumer" placeholder=""></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="hadndleSearch">查询</el-button>
@@ -81,12 +88,12 @@
             label="归还时间"
             width="160">
           </el-table-column>
-           <el-table-column
+           <!-- <el-table-column
 
             prop="displayUseTime"
             label="使用时间"
             width="160">
-          </el-table-column>
+          </el-table-column> -->
              <el-table-column
             prop="keeper"
             label="保管人"
@@ -122,7 +129,7 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="200">
+          >
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
               <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->
@@ -160,7 +167,7 @@
         </el-form-item>
         <el-form-item label="操作类型" :label-width="formLabelWidth">
            <el-select v-model="batchForm.optType" placeholder="请选择">
-            <el-option v-for="(option,index) in statusOptions"
+            <el-option v-for="(option,index) in batchStatusOptions"
             :key="index"
             :label="option.label"
             :value="option.value"></el-option>
@@ -168,24 +175,68 @@
         </el-form-item>
           <el-form-item
            label="固定码" :label-width="formLabelWidth">
-          <el-input
+         <el-col :span="10">
+            <el-input
           v-model="batchForm.fixCode" autocomplete="off"></el-input>
+         </el-col>
         </el-form-item>
-          <el-form-item label="发码起始值(含)"
+          <el-form-item label="发码1"
           :label-width="formLabelWidth">
-          <el-input
-           v-model="batchForm.from" autocomplete="off"></el-input>
+          <el-row>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.from1" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='2' class="ta-c">-</el-col>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.to1" autocomplete="off"></el-input>
+            </el-col>
+          </el-row>
+
         </el-form-item>
-          <el-form-item label="发码终止值(含)" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.to" autocomplete="off"></el-input>
+          <el-form-item label="发码2"
+          :label-width="formLabelWidth">
+          <el-row>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.from2" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='2' class="ta-c">-</el-col>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.to2" autocomplete="off"></el-input>
+            </el-col>
+          </el-row>
+
+        </el-form-item>
+          <el-form-item label="发码3"
+          :label-width="formLabelWidth">
+          <el-row>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.from3" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='2' class="ta-c">-</el-col>
+            <el-col :span="8">
+              <el-input
+           v-model="batchForm.to3" autocomplete="off"></el-input>
+            </el-col>
+          </el-row>
+
         </el-form-item>
          <el-form-item label="保管人" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.keeper" autocomplete="off"></el-input>
+            <el-col :span="10">
+                <el-input
+              v-model="batchForm.keeper" autocomplete="off"></el-input>
+            </el-col>
 
         </el-form-item>
         <el-form-item label="领退人" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.consumer" autocomplete="off"></el-input>
-
+           <el-col :span="10">
+                <el-input
+              v-model="batchForm.consumer" autocomplete="off"></el-input>
+            </el-col>
         </el-form-item>
 
       </el-form>
@@ -287,14 +338,20 @@ export default {
         childCode: '',
         from: '',
         to: '',
-        status: ''
+        status: '',
+        keepe: '',
+        consumer: ''
       },
       batchForm: {
         date: '',
         optType: '',
         fixCode: '',
-        from: '',
-        to: '',
+        from1: '',
+        to1: '',
+        from2: '',
+        to2: '',
+        from3: '',
+        to3: '',
         keeper: '',
         consumer: ''
       },
@@ -351,6 +408,20 @@ export default {
         {
           label: '已使用',
           value: 4
+        }
+      ],
+      batchStatusOptions: [
+        {
+          label: '入库',
+          value: 1
+        },
+        {
+          label: '发出',
+          value: 2
+        },
+        {
+          label: '退回',
+          value: 3
         }
       ],
       tableData: [],
@@ -523,5 +594,8 @@ export default {
 .module-header{
   display: flex;
   justify-content: space-between;
+}
+.ta-c{
+  text-align: center;
 }
 </style>

@@ -70,7 +70,7 @@ const frameIn = [
         path: 'detail',
         name: 'detail',
         meta: {
-          title: '耗材明细',
+          title: '消耗明细',
           auth: true
         },
         component: _import('detail/boomDetail/index')

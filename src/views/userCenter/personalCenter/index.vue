@@ -19,13 +19,13 @@
           <el-tag class="tags">{{personalDetail.roleDisplay}}</el-tag>
         </div>
         <div class="persoanl-group strip">
-          <div class="key">分组：</div>
+          <div class="key">班组号：</div>
           <div class="value">
             {{personalDetail.group}}
           </div>
         </div>
          <div class="persoanl-group strip">
-          <div class="key">位置：</div>
+          <div class="key">职位：</div>
           <div class="value">
             {{personalDetail.position}}
           </div>

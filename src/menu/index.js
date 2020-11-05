@@ -46,7 +46,7 @@ export const menuAside = supplementPath([
     ]
   },
   {
-    title: '耗材明细',
+    title: '消耗明细',
     icon: 'folder-o',
     path: '/detail'
   },

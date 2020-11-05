@@ -2,25 +2,44 @@
   <d2-container>
     <template slot="header">
       <div class="module-header">
-       <div class="left-box">
+              <div class="left-box">
          <el-form size="mini" inline>
 
         <el-form-item label="检索日期">
-        <el-date-picker
-      v-model="query.queryValue"
-      type="date"
-      value-format="timestamp"
-      :picker-options="pickerOptions"
-      placeholder="选择日期时间">
-    </el-date-picker>
+      <el-row :gutter="20" type="flex" justify="start">
+             <el-col :span="11">
+              <el-date-picker
+                    v-model="queryForm.startTime"
+                    type="date"
+                    value-format="timestamp"
+                    :picker-options="pickerOptions"
+                    placeholder="选择日期时间">
+                  </el-date-picker>
+
+             </el-col>
+             <el-col :span="4" class="line">-</el-col>
+             <el-col :span="16">
+               <el-date-picker
+                  v-model="queryForm.endTime"
+                  type="date"
+                  value-format="timestamp"
+                  :picker-options="pickerOptions"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+             </el-col>
+           </el-row>
         </el-form-item>
+         <el-form-item label="保管人">
+            <el-input v-model="queryForm.keeper" placeholder=""></el-input>
+          </el-form-item>
+           <el-form-item label="领退人">
+            <el-input v-model="queryForm.consumer" placeholder=""></el-input>
+          </el-form-item>
+
           <el-form-item>
           <el-button  @click="getList" type="primary" >查询</el-button>
         </el-form-item>
          </el-form>
-       </div>
-       <div class="right-box">
-          <!-- <el-button  @click="handleAdd" type="primary" size="mini">新增</el-button> -->
        </div>
 
      </div>
@@ -49,27 +68,27 @@
             label="操作"
             >
           </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
             prop="fixCode"
             label="固定码"
             >
-          </el-table-column>
+          </el-table-column> -->
             <el-table-column
-            prop="from"
-            label="发码起始值"
+            prop="box"
+            label="箱号"
             width="100"
             >
           </el-table-column>
             <el-table-column
-            prop="to"
-            label="发码结束值"
+            prop="col"
+            label="柱码"
             width="100"
             >
           </el-table-column>
 
            <el-table-column
             prop="keeper"
-            label="库存人"
+            label="保管人"
             >
           </el-table-column>
            <el-table-column
@@ -84,7 +103,7 @@
           </el-table-column>
            <el-table-column
             prop="store"
-            label="库存"
+            label="入库"
             >
           </el-table-column>
 
@@ -100,11 +119,11 @@
             >
           </el-table-column>
 
-            <el-table-column
+            <!-- <el-table-column
             prop="consumed"
             label="已消耗"
             >
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column            fixed="right"
             label="操作"
             width="200">
@@ -158,9 +177,11 @@ export default {
   name: 'page1',
   data () {
     return {
-      query: {
-        queryKey: 'id',
-        queryValue: ''
+      queryForm: {
+        startTime: '',
+        endTime: '',
+        keeper: '',
+        consumer: ''
       },
       stock: 0,
       formLabelWidth: '120px',
@@ -219,10 +240,11 @@ export default {
   },
   methods: {
     async getList () {
-      const params = {}
-      params.date = this.query.queryValue
+      let params = Object.assign({}, this.queryForm)
+
       params.pageNo = this.pager.pageNo
       params.pageSize = this.pager.pageSize
+      params = util.fixEmptyVal(params)
 
       const res = await api.EXPLOSIVE_LOG(params)
       if (res) {

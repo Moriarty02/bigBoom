@@ -135,7 +135,7 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="200">
+            >
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
               <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->

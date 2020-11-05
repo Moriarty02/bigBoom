@@ -44,12 +44,12 @@
           </el-table-column>
           <el-table-column
             prop="group"
-            label="分组"
+            label="班组号"
             width="150">
           </el-table-column>
           <el-table-column
             prop="position"
-            label="位置"
+            label="职位"
             width="150">
           </el-table-column>
            <el-table-column
@@ -79,7 +79,7 @@
           <el-table-column
             fixed="right"
             label="操作"
-            width="200">
+            >
             <template slot-scope="scope">
               <el-button @click="handleEdit(scope.row)" type="primary" size="small">编辑</el-button>
               <!-- <el-button @click="handleDelete(scope.row)" type="primary" size="small">删除</el-button> -->
@@ -100,10 +100,10 @@
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="分组" :label-width="formLabelWidth">
+          <el-form-item label="班组号" :label-width="formLabelWidth">
           <el-input v-model="form.group" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="位置" :label-width="formLabelWidth">
+          <el-form-item label="职位" :label-width="formLabelWidth">
           <el-input v-model="form.position" autocomplete="off"></el-input>
         </el-form-item>
           <el-form-item label="电话号码" :label-width="formLabelWidth">

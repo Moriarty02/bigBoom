@@ -31,6 +31,12 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       method: 'POST',
       data
     })
+  },
+  DETAIL_DOWNLOAD (data = {}) {
+    // 接口请求
+    return service({
+      url: '/api/detail/download' + tools.getQueryString(data),
+      method: 'get'
+    })
   }
-
 })
