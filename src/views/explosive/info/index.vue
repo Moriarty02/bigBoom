@@ -7,23 +7,26 @@
           <el-form-item label="批次号">
             <el-input v-model="formInline.batchNum" placeholder=""></el-input>
           </el-form-item>
-
-          <el-form-item label="箱号起始值">
-            <el-input v-model="formInline.boxFrom" placeholder=""></el-input>
+           <el-form-item label="箱号">
+            <el-row>
+               <el-col :span="8"><el-input  v-model="formInline.boxFrom" placeholder=""></el-input></el-col>
+            <el-col :span="4" class="ta-c">-</el-col>
+            <el-col :span="8"><el-input  v-model="formInline.boxTo" placeholder=""></el-input></el-col>
+            </el-row>
           </el-form-item>
-
-          <el-form-item label="箱号结束值">
-            <el-input v-model="formInline.boxTo" placeholder=""></el-input>
+           <el-form-item label="柱号">
+            <el-row>
+               <el-col :span="8"><el-input  v-model="formInline.colFrom" placeholder=""></el-input></el-col>
+            <el-col :span="4" class="ta-c">-</el-col>
+            <el-col :span="8"><el-input  v-model="formInline.colTo" placeholder=""></el-input></el-col>
+            </el-row>
           </el-form-item>
-
-          <el-form-item label="柱号起始值">
-            <el-input v-model="formInline.colFrom" placeholder=""></el-input>
+            <el-form-item label="保管人">
+            <el-input v-model="formInline.keeper" placeholder=""></el-input>
           </el-form-item>
-
-          <el-form-item label="柱号结束值">
-            <el-input v-model="formInline.colTo" placeholder=""></el-input>
-        </el-form-item>
-
+           <el-form-item label="领退人">
+            <el-input v-model="formInline.consumer" placeholder=""></el-input>
+          </el-form-item>
           <el-form-item label="状态" clearable>
             <el-select v-model="formInline.status" placeholder="状态">
               <el-option
@@ -86,15 +89,15 @@
             <el-table-column
 
             prop="displaySendTime"
-            label="入库时间"
+            label="发出时间"
             width="160">
           </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
 
             prop="displayUseTime"
             label="使用时间"
             width="160">
-          </el-table-column>
+          </el-table-column> -->
             <el-table-column
 
             prop="displayBackTime"
@@ -117,17 +120,16 @@
             label="状态"
             width="100">
              <template slot-scope="scope">
-
-          <el-tag type="success" v-if="scope.row.status === 1">
+           <el-tag type="success" v-if="scope.row.status === 1">
             入库
           </el-tag>
-          <el-tag type="success" v-if="scope.row.status === 2">
+          <el-tag type="danger" v-if="scope.row.status === 2">
             发出
           </el-tag>
-          <el-tag type="success" v-if="scope.row.status === 3">
+          <el-tag type="info" v-if="scope.row.status === 3">
             退还
           </el-tag>
-           <el-tag type="success" v-if="scope.row.status === 4">
+           <el-tag type="warning" v-if="scope.row.status === 4">
             已使用
           </el-tag>
              </template>
@@ -151,7 +153,7 @@
         </el-pagination>
       </div>
     </d2-module>
-    <el-dialog title="批量操作" :visible.sync="dialogBatchFormVisible" width="700px">
+    <el-dialog title="批量操作" :visible.sync="dialogBatchFormVisible" width="800px">
      <el-form :model="batchForm" size="mini" label-position="right" >
          <el-form-item label="入库时间" :label-width="formLabelWidth">
            <el-date-picker
@@ -162,41 +164,112 @@
             placeholder="选择日期时间">
           </el-date-picker>
          </el-form-item>
-         <el-form-item label="操作类型" :label-width="formLabelWidth">
-           <el-select v-model="batchForm.optType" placeholder="请选择">
-            <el-option v-for="(option,index) in statusOptions"
-            :key="index"
-            :label="option.label"
-            :value="option.value"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item
-           label="批次号" :label-width="formLabelWidth">
+           <el-form-item
+           label="批次号"  :label-width="formLabelWidth">
           <el-input
           v-model="batchForm.batchNum" autocomplete="off"></el-input>
         </el-form-item>
-          <el-form-item label="箱号起始值"
-          :label-width="formLabelWidth">
-          <el-input
-           v-model="batchForm.boxFrom" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="箱号结束值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.boxTo" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="柱号起始值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.colFrom" autocomplete="off"></el-input>
-        </el-form-item>
-          <el-form-item label="柱号结束值" :label-width="formLabelWidth">
-          <el-input v-model="batchForm.colTo" autocomplete="off"></el-input>
-        </el-form-item>
-         <el-form-item label="炸药规格" :label-width="formLabelWidth">
-           <el-select v-model="batchForm.type" placeholder="请选择">
-            <el-option v-for="(option,index) in types"
+         <el-form-item label="操作类型" :label-width="formLabelWidth">
+           <el-select v-model="batchForm.optType" @change="handleChange" placeholder="请选择">
+            <el-option v-for="(option,index) in batchStatusOptions"
             :key="index"
             :label="option.label"
             :value="option.value"></el-option>
           </el-select>
         </el-form-item>
+
+        <template v-if="batchForm.optType==1">
+           <el-form-item label="箱号1"
+          :label-width="formLabelWidth">
+          <el-row :gutter="4">
+            <el-col :span="5">
+              <el-input
+           v-model="batchForm.boxFrom1" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='1' class="ta-c">-</el-col>
+            <el-col :span="5">
+            <el-input
+           v-model="batchForm.boxTo1" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span="12">
+               <el-radio-group v-model="batchForm.type1">
+            <el-radio  v-for="(option,index) in types"
+            :label="option.value"
+            :key="index"
+            >{{option.label}}</el-radio>
+          </el-radio-group>
+            </el-col>
+          </el-row>
+        </el-form-item>
+         <el-form-item label="箱号2"
+          :label-width="formLabelWidth">
+          <el-row :gutter="4">
+            <el-col :span="5">
+              <el-input
+           v-model="batchForm.boxFrom2" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='1' class="ta-c">-</el-col>
+            <el-col :span="5">
+            <el-input
+           v-model="batchForm.boxTo2" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span="12">
+               <el-radio-group v-model="batchForm.type2">
+            <el-radio  v-for="(option,index) in types"
+            :label="option.value"
+            :key="index"
+            >{{option.label}}</el-radio>
+          </el-radio-group>
+            </el-col>
+          </el-row>
+        </el-form-item>
+         <el-form-item label="箱号3"
+          :label-width="formLabelWidth">
+          <el-row :gutter="4">
+            <el-col :span="5">
+              <el-input
+           v-model="batchForm.boxFrom3" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='1' class="ta-c">-</el-col>
+            <el-col :span="5">
+            <el-input
+           v-model="batchForm.boxTo3" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span="12">
+               <el-radio-group v-model="batchForm.type3">
+            <el-radio  v-for="(option,index) in types"
+            :label="option.value"
+            :key="index"
+            >{{option.label}}</el-radio>
+          </el-radio-group>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        </template>
+        <template v-else>
+           <el-form-item label="箱号" :label-width="formLabelWidth">
+          <el-input v-model="batchForm.box " autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="箱号(散)"
+          :label-width="formLabelWidth">
+          <el-row :gutter="8">
+             <el-col :span="4">
+               <el-input v-model="batchForm.sbox" autocomplete="off"></el-input>
+             </el-col>
+            <el-col :span="2">柱号</el-col>
+            <el-col :span="5">
+              <el-input
+           v-model="batchForm.colFro" autocomplete="off"></el-input>
+            </el-col>
+            <el-col :span='1' class="ta-c">-</el-col>
+            <el-col :span="5">
+            <el-input
+           v-model="batchForm.colTo" autocomplete="off"></el-input>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        </template>
+
          <el-form-item label="保管人" :label-width="formLabelWidth">
           <el-input v-model="batchForm.keeper" autocomplete="off"></el-input>
 
@@ -314,19 +387,28 @@ export default {
         boxTo: '',
         colFrom: '',
         colTo: '',
-        status: ''
+        status: '',
+        keeper: '',
+        consumer: ''
       },
       batchForm: {
-        optType: '',
+        optType: 1,
         batchNum: '',
-        boxFrom: '',
-        boxTo: '',
-        type: '',
+        boxFrom1: '',
+        boxTo1: '',
+        boxFrom2: '',
+        boxTo2: '',
+        boxFrom3: '',
+        boxTo3: '',
+        type1: 0,
+        type2: 0,
+        type3: 0,
+        box: '',
+        sbox: '',
         colFrom: '',
         colTo: '',
         keeper: '',
-        consumer: '',
-        date: ''
+        consumer: ''
 
       },
       formLabelWidth: '120px',
@@ -365,6 +447,21 @@ export default {
           label: '2kg/柱',
           value: 2
         }
+      ],
+      batchStatusOptions: [
+        {
+          label: '入库',
+          value: 1
+        },
+        {
+          label: '发出',
+          value: 2
+        },
+        {
+          label: '退回',
+          value: 3
+        }
+
       ],
       statusOptions: [
         {
@@ -434,6 +531,9 @@ export default {
     this.getList()
   },
   methods: {
+    handleChange (e) {
+      // console.log(e)
+    },
     async getList () {
       let params = {}
       params = Object.assign({}, this.formInline)
@@ -473,11 +573,19 @@ export default {
     handleAdd () {
       this.isCreating = true
       this.batchForm = {
-        optType: '',
+        optType: 1,
         batchNum: '',
-        boxFrom: '',
-        boxTo: '',
-        type: '',
+        boxFrom1: '',
+        boxTo1: '',
+        boxFrom2: '',
+        boxTo2: '',
+        boxFrom3: '',
+        boxTo3: '',
+        type1: 0,
+        type2: 0,
+        type3: 0,
+        box: '',
+        sbox: '',
         colFrom: '',
         colTo: '',
         keeper: '',
@@ -537,7 +645,8 @@ export default {
       }
     },
     async handleBatchSubmit () {
-      const sdata = Object.assign({}, this.batchForm)
+      let sdata = this.getBatchData(this.batchForm)
+      sdata = util.fixEmptyVal(sdata)
       const res = await api.EXPLOSIVE_BATCH(sdata)
       if (res && res >= 0) {
         this.$message.success('批量操作成功')
@@ -545,6 +654,26 @@ export default {
       } else {
         this.$message.error('批量操作失败')
       }
+    },
+    getBatchData (origin) {
+      const data = Object.assign({}, origin)
+      if (origin.optType !== 1) {
+        delete data.boxFrom1
+        delete data.boxTo1
+        delete data.boxFrom2
+        delete data.boxTo2
+        delete data.boxFrom3
+        delete data.boxTo3
+        delete data.type1
+        delete data.type2
+        delete data.type3
+      } else {
+        delete data.box
+        delete data.sbox
+        delete data.colFrom
+        delete data.colTo
+      }
+      return data
     },
     getToday () {
       const date = +new Date()
@@ -557,5 +686,8 @@ export default {
 .module-header{
   display: flex;
   justify-content: space-between;
+}
+.ta-c{
+  text-align: center;
 }
 </style>

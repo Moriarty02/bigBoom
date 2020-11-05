@@ -115,13 +115,13 @@
           <el-tag type="success" v-if="scope.row.status === 1">
             入库
           </el-tag>
-          <el-tag type="success" v-if="scope.row.status === 2">
+          <el-tag type="danger" v-if="scope.row.status === 2">
             发出
           </el-tag>
-          <el-tag type="success" v-if="scope.row.status === 3">
+          <el-tag type="info" v-if="scope.row.status === 3">
             退还
           </el-tag>
-           <el-tag type="success" v-if="scope.row.status === 4">
+           <el-tag type="warning" v-if="scope.row.status === 4">
             已使用
           </el-tag>
              </template>
